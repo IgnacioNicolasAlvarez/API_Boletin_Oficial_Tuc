@@ -3,6 +3,9 @@ from bson.objectid import ObjectId
 from decouple import config
 
 MONGO_DETAILS = config('MONGO_DETAILS')
+client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_DETAILS)
+database = client.Boletin
+aviso_collection = database.get_collection("aviso")
 
 
 async def retrieve_avisos():
@@ -40,16 +43,9 @@ async def delete_aviso(id: str):
         return True
 
 
-client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_DETAILS)
-
-database = client.Boletin
-
-aviso_collection = database.get_collection("aviso")
-
-
 def aviso_helper(aviso) -> dict:
     return {
-        "_id": aviso['_id'],
+        "_id": str(aviso['_id']),
         "texto": aviso['texto'],
         "nro_boletin": aviso['nro_boletin'],
         "fecha_aviso": aviso['fecha_aviso'],
