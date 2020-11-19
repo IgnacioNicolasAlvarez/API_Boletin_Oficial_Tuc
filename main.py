@@ -8,4 +8,4 @@ app.include_router(AvisoRouter, tags=["Aviso"], prefix="/aviso")
 
 @app.get("/", tags=["Root"])
 async def read_root():
-    return {"message": "Welcome to this fantastic app!"}
+    return {"message": "Oh what a day what a lovely day to eat a milanesa!"}
