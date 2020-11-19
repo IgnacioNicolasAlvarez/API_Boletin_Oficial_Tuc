@@ -4,6 +4,7 @@ from decouple import config
 
 MONGO_DETAILS = config('MONGO_DETAILS')
 
+
 async def retrieve_avisos():
     avisos = []
     async for aviso in aviso_collection.find():
@@ -48,6 +49,7 @@ aviso_collection = database.get_collection("aviso")
 
 def aviso_helper(aviso) -> dict:
     return {
+        "_id": aviso['_id'],
         "texto": aviso['texto'],
         "nro_boletin": aviso['nro_boletin'],
         "fecha_aviso": aviso['fecha_aviso'],

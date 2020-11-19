@@ -3,6 +3,7 @@ from pydantic import BaseModel, Field
 
 
 class AvisoSchema(BaseModel):
+    _id: str = Field(None)
     texto: str = Field(None)
     nro_boletin: str = Field(None)
     fecha_aviso: str = Field(None)
@@ -19,6 +20,7 @@ class AvisoSchema(BaseModel):
     class Config:
         schema_extra = {
             "example": {
+                "_id": "a123b456e789d7a8s7d8s9d87as897d89as7d987as9d87",
                 "texto": "POR 5 DIAS - VICENTE TRAPANI S.A. Convocatoria. Se convoca a Asamblea General "
                          "Ordinaria de accionistas de VICENTE TRAPANI S.A. para el da viernes 19 de Junio de "
                          "2020, a las 09:00 horas a realizarse en el local social de Los Nogales - "
