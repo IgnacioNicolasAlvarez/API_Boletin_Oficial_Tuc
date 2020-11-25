@@ -6,6 +6,7 @@ from server.database import (
     retrieve_aviso,
     retrieve_avisos,
     update_aviso,
+    retrieve_aviso_between_dates
 )
 from server.models.aviso import (
     error_response_model,
@@ -13,6 +14,9 @@ from server.models.aviso import (
     AvisoSchema,
     UpdateAvisoModel,
 )
+
+from server.models.view_models import VM_aviso_fecha
+
 
 router = APIRouter()
 
@@ -28,6 +32,14 @@ async def get_avisos():
 @router.get("/{id}", response_description="Aviso data retrieved")
 async def get_aviso_data(id):
     aviso = await retrieve_aviso(id)
+    if aviso:
+        return response_model(aviso, "Aviso data retrieved successfully")
+    return error_response_model("An error occurred.", 404, "Aviso doesn't exist.")
+
+
+@router.post("/", response_description="Aviso data retrieved")
+async def get_aviso_data(vm: VM_aviso_fecha):
+    aviso = await retrieve_aviso_between_dates(vm)
     if aviso:
         return response_model(aviso, "Aviso data retrieved successfully")
     return error_response_model("An error occurred.", 404, "Aviso doesn't exist.")
@@ -54,7 +66,8 @@ async def delete_aviso_data(id: str):
     deleted_aviso = await delete_aviso(id)
     if deleted_aviso:
         return response_model(
-            "Aviso with ID: {} removed".format(id), "Aviso deleted successfully"
+            "Aviso with ID: {} removed".format(
+                id), "Aviso deleted successfully"
         )
     return error_response_model(
         "An error occurred", 404, "Aviso with id {0} doesn't exist".format(id)

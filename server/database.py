@@ -2,6 +2,9 @@ import motor.motor_asyncio
 from bson.objectid import ObjectId
 from decouple import config
 
+from datetime import datetime
+
+
 MONGO_DETAILS = config('MONGO_DETAILS')
 client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_DETAILS)
 database = client.Boletin
@@ -12,6 +15,16 @@ async def retrieve_avisos():
     avisos = []
     async for aviso in aviso_collection.find():
         avisos.append(aviso_helper(aviso))
+    return avisos
+
+
+async def retrieve_aviso_between_dates(vm):
+    avisos = []
+    async for aviso in aviso_collection.find():
+        aviso = aviso_helper(aviso)
+        fecha_aviso = datetime.strptime(aviso['fecha_aviso'], '%Y-%m-%d')
+        if fecha_aviso > datetime.strptime(vm.fecha_desde, '%Y-%m-%d') and fecha_aviso < datetime.strptime(vm.fecha_hasta, '%Y-%m-%d'):
+            avisos.append(aviso)
     return avisos
 
 
