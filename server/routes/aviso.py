@@ -20,8 +20,7 @@ router = APIRouter()
 
 @router.get("/", response_description="Avisos retrieved")
 async def get_avisos(commons: CommonPaginationParams = Depends(CommonPaginationParams)):
-    avisos = await retrieve_avisos()
-    avisos = avisos[commons.skip: commons.skip + commons.limit]
+    avisos = await retrieve_avisos(commons.skip, commons.skip + commons.limit)
     if avisos:
         response = response_model(avisos, "Avisos data retrieved successfully")
         response.update(dict(skip=commons.skip, limit=commons.limit))
