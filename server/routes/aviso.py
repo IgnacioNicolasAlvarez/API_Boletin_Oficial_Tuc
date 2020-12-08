@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Body
+from fastapi import APIRouter, Body, Depends
 
 from server.database import (
     delete_aviso,
@@ -13,41 +13,36 @@ from server.models.aviso import (
     UpdateAvisoModel,
 )
 from server.models.view_models import VM_aviso_fecha
+from .common import CommonPaginationParams
 
 router = APIRouter()
 
 
 @router.get("/", response_description="Avisos retrieved")
-async def get_avisos():
+async def get_avisos(commons: CommonPaginationParams = Depends(CommonPaginationParams)):
     avisos = await retrieve_avisos()
+    avisos = avisos[commons.skip: commons.skip + commons.limit]
     if avisos:
-        return response_model(avisos,
-                              "Avisos data retrieved successfully")
-    return error_response_model(avisos,
-                                404,
-                                "Empty list returned")
+        response = response_model(avisos, "Avisos data retrieved successfully")
+        response.update(dict(skip=commons.skip, limit=commons.limit))
+        return response
+    return error_response_model(avisos, 404, "Empty list returned")
 
 
 @router.get("/{id}", response_description="Aviso data retrieved")
 async def get_aviso_data(id):
     aviso = await retrieve_aviso(id)
     if aviso:
-        return response_model(aviso,
-                              "Aviso data retrieved successfully")
-    return error_response_model("An error occurred.",
-                                404,
-                                "Aviso doesn't exist.")
+        return response_model(aviso, "Aviso data retrieved successfully")
+    return error_response_model("An error occurred.", 404, "Aviso doesn't exist.")
 
 
 @router.post("/", response_description="Aviso data retrieved")
 async def get_aviso_data(vm: VM_aviso_fecha):
     aviso = await retrieve_aviso_between_dates(vm)
     if aviso:
-        return response_model(aviso,
-                              "Aviso data retrieved successfully")
-    return error_response_model("An error occurred.",
-                                404,
-                                "Aviso doesn't exist.")
+        return response_model(aviso, "Aviso data retrieved successfully")
+    return error_response_model("An error occurred.", 404, "Aviso doesn't exist.")
 
 
 @router.put("/{id}")
@@ -59,11 +54,7 @@ async def update_aviso_data(id: str, req: UpdateAvisoModel = Body(...)):
             "Aviso with ID: {} name update is successful".format(id),
             "Aviso name updated successfully",
         )
-    return error_response_model(
-        "An error occurred",
-        404,
-        "There was an error updating the aviso data.",
-    )
+    return error_response_model("An error occurred", 404, "There was an error updating the aviso data.", )
 
 
 @router.delete("/{id}", response_description="Aviso data deleted from the database")
@@ -74,8 +65,4 @@ async def delete_aviso_data(id: str):
             "Aviso with ID: {} removed".format(id),
             "Aviso deleted successfully"
         )
-    return error_response_model(
-        "An error occurred",
-        404,
-        "Aviso with id {0} doesn't exist".format(id)
-    )
+    return error_response_model("An error occurred", 404, "Aviso with id {0} doesn't exist".format(id))
