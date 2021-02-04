@@ -16,10 +16,10 @@ async def get_entidades_from_texto(mensaje: Mensaje):
     nlp = spacy.load("es_core_news_sm")
     entidades = []
 
-    doc = nlp(mensaje.texto)
+    doc = nlp(mensaje.texto[11:])
 
     for token in doc:
-        if token.tag_ == "PROPN" and token.pos_ == "PROPN" and token.shape_ == 'Xxxxx':
+        if token.tag_ == "PROPN" and token.pos_ == "PROPN" and len(token.shape_) >= 4:
             entidades.append(token.text)
         # entidades.append(
         #    {token.text: {"tag": token.tag_, "pos": token.pos_, "shape": token.shape_}})
