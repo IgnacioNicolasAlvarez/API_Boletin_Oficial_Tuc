@@ -3,14 +3,18 @@ from bson.objectid import ObjectId
 from decouple import config
 
 from datetime import datetime
+from fastapi_users.db import MongoDBUserDatabase
+
+from ..models.user import UserDB
 
 MONGO_DETAILS = config('MONGO_DETAILS')
 client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_DETAILS)
+
 database = client.Boletin
 aviso_collection = database.get_collection("aviso")
 
 
-async def retrieve_avisos(skip, limit):
+async def get_avisos(skip, limit):
     avisos = []
     collection = aviso_collection.find().skip(skip).limit(limit)
     async for aviso in collection:
@@ -18,7 +22,7 @@ async def retrieve_avisos(skip, limit):
     return avisos
 
 
-async def retrieve_aviso_between_dates(vm):
+async def get_aviso_between_dates(vm):
     avisos = []
     async for aviso in aviso_collection.find():
         aviso = aviso_helper(aviso)
@@ -29,7 +33,7 @@ async def retrieve_aviso_between_dates(vm):
     return avisos
 
 
-async def retrieve_aviso(id: str) -> dict:
+async def get_aviso(id: str) -> dict:
     aviso = await aviso_collection.find_one({"_id": ObjectId(id)})
     if aviso:
         return aviso_helper(aviso)
@@ -73,3 +77,4 @@ def aviso_helper(aviso) -> dict:
         "CUIT": aviso['CUIT'],
         "capitalSocial": aviso['capitalSocial'],
     }
+
