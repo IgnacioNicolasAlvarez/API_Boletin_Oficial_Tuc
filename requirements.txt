@@ -14,8 +14,11 @@ cymem==2.0.5
 dnspython==2.0.0
 email-validator==1.1.2
 es-core-news-sm @ https://github.com/explosion/spacy-models/releases/download/es_core_news_sm-3.0.0/es_core_news_sm-3.0.0-py3-none-any.whl
+es-dep-news-trf @ https://github.com/explosion/spacy-models/releases/download/es_dep_news_trf-3.0.0/es_dep_news_trf-3.0.0-py3-none-any.whl
 fastapi==0.61.2
 fastapi-users==5.0.0
+filelock==3.0.12
+ftfy==5.8
 graphene==2.1.8
 graphql-core==2.3.2
 graphql-relay==2.0.1
@@ -25,6 +28,7 @@ idna==2.10
 importlib-metadata==3.4.0
 itsdangerous==1.1.0
 Jinja2==2.11.2
+joblib==1.0.0
 makefun==1.9.5
 MarkupSafe==1.1.1
 motor==2.3.0
@@ -45,22 +49,31 @@ pyparsing==2.4.7
 python-decouple==3.3
 python-multipart==0.0.5
 PyYAML==5.3.1
+regex==2020.11.13
 requests==2.25.0
 Rx==1.6.1
+sacremoses==0.0.43
 six==1.15.0
 smart-open==3.0.0
 spacy==3.0.1
+spacy-alignments==0.7.2
 spacy-legacy==3.0.1
+spacy-transformers==1.0.1
 srsly==2.4.0
 starlette==0.13.6
 thinc==8.0.1
+tokenizers==0.9.4
 toml==0.10.2
+torch==1.7.1
+torchcontrib==0.0.2
 tqdm==4.56.0
+transformers==4.2.2
 typer==0.3.2
 typing-extensions==3.7.4.3
 ujson==3.2.0
 urllib3==1.26.2
 uvicorn==0.11.8
 wasabi==0.8.2
+wcwidth==0.2.5
 websockets==8.1
 zipp==3.4.0
