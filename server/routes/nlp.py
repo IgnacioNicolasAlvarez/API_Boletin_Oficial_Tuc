@@ -2,9 +2,6 @@
 import spacy
 from fastapi import APIRouter, Body, Depends
 from pydantic import BaseModel, Field
-from transformers import AutoModelForQuestionAnswering, AutoTokenizer, pipeline
-
-MODEL_URL = "mrm8488/distill-bert-base-spanish-wwm-cased-finetuned-spa-squad2-es"
 
 router = APIRouter()
 
@@ -37,17 +34,3 @@ async def get_entidades_from_texto(mensaje: Mensaje):
         "Mensaje Inicial": mensaje.texto,
     }
 
-
-@router.post("/entidades", response_description="NLP data retrieved")
-async def get_entidades_from_texto(consulta: Consulta):
-    tokenizer = AutoTokenizer.from_pretrained(MODEL_URL, do_lower_case=False)
-    model = AutoModelForQuestionAnswering.from_pretrained(MODEL_URL)
-
-    nlp = pipeline('question-answering', model=model, tokenizer=tokenizer)
-    salida = nlp({'question': consulta.pregunta, 'context': consulta.texto})
-
-    return {
-        "Mensaje Inicial": consulta.texto,
-        "Respuesta": salida['answer'],
-        "Puntaje": salida['score'],
-    }

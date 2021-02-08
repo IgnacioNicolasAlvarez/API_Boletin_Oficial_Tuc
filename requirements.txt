@@ -67,7 +67,6 @@ toml==0.10.2
 torch==1.7.1
 torchcontrib==0.0.2
 tqdm==4.56.0
-transformers==4.2.2
 typer==0.3.2
 typing-extensions==3.7.4.3
 ujson==3.2.0
